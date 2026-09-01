@@ -48,6 +48,7 @@ public class RecurringTransaction {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
+    private String status;
 
     // Getters and Setters
 
@@ -154,4 +155,12 @@ public class RecurringTransaction {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
-}
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+
+    }
+    }

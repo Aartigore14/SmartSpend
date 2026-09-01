@@ -4,7 +4,8 @@ import com.smartspend.entity.RecurringTransaction;
 import com.smartspend.entity.Transaction;
 import com.smartspend.repository.RecurringTransactionRepository;
 import org.springframework.stereotype.Service;
-
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -57,7 +58,7 @@ public class RecurringTransactionService {
 
         return recurringTransactionRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException(
+                        new ResponseStatusException( HttpStatus.NOT_FOUND,
                                 "Recurring transaction not found"
                         ));
     }
@@ -71,7 +72,7 @@ public class RecurringTransactionService {
         RecurringTransaction existing =
                 recurringTransactionRepository.findById(id)
                         .orElseThrow(() ->
-                                new RuntimeException(
+                                new ResponseStatusException(HttpStatus.NOT_FOUND,
                                         "Recurring transaction not found"
                                 ));
 
@@ -82,8 +83,8 @@ public class RecurringTransactionService {
         existing.setStartDate(updatedTransaction.getStartDate());
         existing.setEndDate(updatedTransaction.getEndDate());
         existing.setDescription(updatedTransaction.getDescription());
+        existing.setStatus(updatedTransaction.getStatus());
         existing.setActive(updatedTransaction.getActive());
-
         existing.setUpdatedAt(LocalDateTime.now());
 
         return recurringTransactionRepository.save(existing);
@@ -94,7 +95,7 @@ public class RecurringTransactionService {
     public void deleteRecurringTransaction(Long id) {
 
         if (!recurringTransactionRepository.existsById(id)) {
-            throw new RuntimeException(
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                     "Recurring transaction not found"
             );
         }
