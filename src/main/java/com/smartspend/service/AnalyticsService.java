@@ -4,16 +4,21 @@ import com.smartspend.dto.AnalyticsResponse;
 import com.smartspend.entity.Transaction;
 import com.smartspend.repository.TransactionRepository;
 import org.springframework.stereotype.Service;
-
+import com.smartspend.entity.Category;
+import com.smartspend.repository.CategoryRepository;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 
 @Service
 public class AnalyticsService {
 
     private final TransactionRepository transactionRepository;
+    private final CategoryRepository categoryRepository;
 
-    public AnalyticsService(TransactionRepository transactionRepository) {
+    public AnalyticsService(TransactionRepository transactionRepository, CategoryRepository categoryRepository) {
         this.transactionRepository = transactionRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     public AnalyticsResponse getUserAnalytics(Long userId) {
@@ -52,13 +57,13 @@ public class AnalyticsService {
                 transactions.size()
         );
     }
-    public java.util.Map<Long, Double> getCategoryWiseExpenses(Long userId) {
+    public Map<String, Double> getCategoryWiseExpenses(Long userId) {
 
         List<Transaction> transactions =
                 transactionRepository.findByUserId(userId);
 
-        java.util.Map<Long, Double> categoryExpenses =
-                new java.util.HashMap<>();
+        Map<String, Double> categoryExpenses =
+                new HashMap<>();
 
         for (Transaction transaction : transactions) {
 
@@ -66,11 +71,20 @@ public class AnalyticsService {
 
                 Long categoryId = transaction.getCategoryId();
 
-                categoryExpenses.put(
-                        categoryId,
-                        categoryExpenses.getOrDefault(categoryId, 0.0)
-                                + transaction.getAmount()
-                );
+                Category category = categoryRepository
+                        .findById(categoryId)
+                        .orElse(null);
+
+                if (category != null) {
+
+                    String categoryName = category.getName();
+
+                    categoryExpenses.put(
+                            categoryName,
+                            categoryExpenses.getOrDefault(categoryName, 0.0)
+                                    + transaction.getAmount()
+                    );
+                }
             }
         }
 
