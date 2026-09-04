@@ -5,6 +5,8 @@ import com.smartspend.service.AnalyticsService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/analytics")
 public class AnalyticsController {
@@ -15,6 +17,7 @@ public class AnalyticsController {
         this.analyticsService = analyticsService;
     }
 
+    // Overall analytics
     @GetMapping("/user/{userId}")
     public ResponseEntity<AnalyticsResponse> getUserAnalytics(
             @PathVariable Long userId) {
@@ -23,13 +26,12 @@ public class AnalyticsController {
                 analyticsService.getUserAnalytics(userId)
         );
     }
-    @GetMapping("/user/{userId}/category-wise")
-    public ResponseEntity<java.util.Map<Long, Double>>
-    getCategoryWiseExpenses(
-            @PathVariable Long userId) {
 
-        return ResponseEntity.ok(
-                analyticsService.getCategoryWiseExpenses(userId)
-        );
+    // Category-wise expense analytics
+    @GetMapping("/user/{userId}/category-wise")
+    public ResponseEntity<Map<String, Double>> getCategoryWiseExpenses(
+            @PathVariable Long userId) {
+        Map<String, Double> result = analyticsService.getCategoryWiseExpenses(userId);
+        return ResponseEntity.ok(result);
     }
 }
