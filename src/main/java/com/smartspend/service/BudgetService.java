@@ -3,6 +3,12 @@ package com.smartspend.service;
 import com.smartspend.entity.Budget;
 import com.smartspend.repository.BudgetRepository;
 import org.springframework.stereotype.Service;
+import com.smartspend.dto.BudgetAnalysisResponse;
+import com.smartspend.entity.Category;
+import com.smartspend.entity.Transaction;
+import com.smartspend.repository.CategoryRepository;
+import com.smartspend.repository.TransactionRepository;
+import java.util.ArrayList;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,9 +17,12 @@ import java.util.List;
 public class BudgetService {
 
     private final BudgetRepository budgetRepository;
-
-    public BudgetService(BudgetRepository budgetRepository) {
+    private final TransactionRepository transactionRepository;
+    private final CategoryRepository categoryRepository;
+    public BudgetService(BudgetRepository budgetRepository, TransactionRepository transactionRepository, CategoryRepository categoryRepository) {
         this.budgetRepository = budgetRepository;
+        this.transactionRepository = transactionRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     // Create budget
@@ -68,5 +77,80 @@ public class BudgetService {
         }
 
         budgetRepository.deleteById(id);
+    }
+    public List<BudgetAnalysisResponse> getBudgetAnalysis(Long userId) {
+
+        List<Budget> budgets =
+                budgetRepository.findByUserId(userId);
+
+        List<Transaction> transactions =
+                transactionRepository.findByUserId(userId);
+
+        List<BudgetAnalysisResponse> results =
+                new ArrayList<>();
+
+        for (Budget budget : budgets) {
+
+            double budgetAmount =
+                    budget.getAmount().doubleValue();
+
+            double spentAmount = 0.0;
+
+            for (Transaction transaction : transactions) {
+
+                if ("EXPENSE".equalsIgnoreCase(transaction.getType())
+                        && transaction.getCategoryId().equals(budget.getCategoryId())
+                        && !transaction.getTransactionDate().isBefore(budget.getStartDate())
+                        && !transaction.getTransactionDate().isAfter(budget.getEndDate())) {
+
+                    spentAmount += transaction.getAmount();
+                }
+            }
+
+            double remainingAmount =
+                    budgetAmount - spentAmount;
+
+            double percentageUsed = 0.0;
+
+            if (budgetAmount > 0) {
+                percentageUsed =
+                        (spentAmount / budgetAmount) * 100;
+            }
+
+            String status;
+
+            if (spentAmount > budgetAmount) {
+                status = "EXCEEDED";
+            }
+            else if (percentageUsed >= 80) {
+                status = "WARNING";
+            }
+            else {
+                status = "ON_TRACK";
+            }
+
+            Category category =
+                    categoryRepository.findById(
+                            budget.getCategoryId()
+                    ).orElse(null);
+
+            String categoryName =
+                    category != null
+                            ? category.getName()
+                            : "Unknown";
+
+            results.add(
+                    new BudgetAnalysisResponse(
+                            categoryName,
+                            budgetAmount,
+                            spentAmount,
+                            remainingAmount,
+                            percentageUsed,
+                            status
+                    )
+            );
+        }
+
+        return results;
     }
 }

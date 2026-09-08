@@ -1,5 +1,6 @@
 package com.smartspend.controller;
 
+import com.smartspend.dto.BudgetAnalysisResponse;
 import com.smartspend.entity.Budget;
 import com.smartspend.service.BudgetService;
 import org.springframework.http.ResponseEntity;
@@ -65,6 +66,10 @@ public class BudgetController {
         return ResponseEntity.ok(
                 budgetService.updateBudget(id, budget)
         );
+    }
+    @GetMapping("user/{userId}/analysis")
+    public ResponseEntity<List<BudgetAnalysisResponse>> getBudgetAnalysis(@PathVariable Long userId){
+        return ResponseEntity.ok(budgetService.getBudgetAnalysis(userId));
     }
 
     // Delete Budget
