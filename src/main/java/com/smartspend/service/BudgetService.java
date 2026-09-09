@@ -12,6 +12,8 @@ import java.util.ArrayList;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import com.smartspend.entity.Notification;
+import com.smartspend.repository.NotificationRepository;
 
 @Service
 public class BudgetService {
@@ -19,10 +21,12 @@ public class BudgetService {
     private final BudgetRepository budgetRepository;
     private final TransactionRepository transactionRepository;
     private final CategoryRepository categoryRepository;
-    public BudgetService(BudgetRepository budgetRepository, TransactionRepository transactionRepository, CategoryRepository categoryRepository) {
+    private final NotificationRepository notificationRepository;
+    public BudgetService(BudgetRepository budgetRepository, TransactionRepository transactionRepository, CategoryRepository categoryRepository, NotificationRepository notificationRepository) {
         this.budgetRepository = budgetRepository;
         this.transactionRepository = transactionRepository;
         this.categoryRepository = categoryRepository;
+        this.notificationRepository = notificationRepository;
     }
 
     // Create budget
@@ -152,5 +156,73 @@ public class BudgetService {
         }
 
         return results;
+    }
+    public void generateBudgetAlerts(Long userId) {
+
+        List<BudgetAnalysisResponse> analyses =
+                getBudgetAnalysis(userId);
+
+        List<Notification> existingNotifications =
+                notificationRepository.findByUserId(userId);
+
+        for (BudgetAnalysisResponse analysis : analyses) {
+
+            String notificationType = null;
+            String title = null;
+            String message = null;
+
+            if ("WARNING".equals(analysis.getStatus())) {
+
+                notificationType = "BUDGET_WARNING";
+                title = "Budget Warning";
+
+                message = "You have used "
+                        + String.format("%.0f", analysis.getPercentageUsed())
+                        + "% of your "
+                        + analysis.getCategory()
+                        + " budget.";
+
+            } else if ("EXCEEDED".equals(analysis.getStatus())) {
+
+                notificationType = "BUDGET_EXCEEDED";
+                title = "Budget Exceeded";
+
+                message = "Your "
+                        + analysis.getCategory()
+                        + " budget has been exceeded.";
+            }
+
+            // No alert required for ON_TRACK
+            if (notificationType == null) {
+                continue;
+            }
+
+            // Check whether this alert already exists
+            final String currentNotificationType = notificationType;
+            final String currentMessage = message;
+
+            boolean alreadyExists = existingNotifications.stream()
+                    .anyMatch(notification ->
+                            currentNotificationType.equals(notification.getType())
+                                    && currentMessage.equals(notification.getMessage())
+                    );
+
+            if (!alreadyExists) {
+
+                Notification notification = new Notification();
+
+                notification.setUserId(userId);
+                notification.setTitle(title);
+                notification.setMessage(message);
+                notification.setType(notificationType);
+                notification.setIsRead(false);
+
+                notificationRepository.save(notification);
+
+                // Add it to the list so duplicate alerts aren't created
+                // during the same execution.
+                existingNotifications.add(notification);
+            }
+        }
     }
 }
