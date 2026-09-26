@@ -38,6 +38,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            System.out.println("❌ No Bearer token found");
             filterChain.doFilter(request, response);
             return;
         }
@@ -45,19 +46,28 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = authHeader.substring(7);
 
         if (!jwtService.isTokenValid(token)) {
+            System.out.println("❌ JWT TOKEN INVALID");
             filterChain.doFilter(request, response);
             return;
         }
 
+        System.out.println("✅ JWT TOKEN VALID");
+
         String email = jwtService.extractEmail(token);
 
-        userService.findByEmail(email).ifPresent(user -> {
+        System.out.println("📧 JWT EMAIL: " + email);
+
+        userService.findByEmail(email).ifPresentOrElse(user -> {
+
+            System.out.println("✅ USER FOUND: " + user.getEmail());
 
             if (SecurityContextHolder.getContext().getAuthentication() == null) {
 
                 String role = user.getRole() != null
                         ? user.getRole()
                         : "USER";
+
+                System.out.println("👤 ROLE: " + role);
 
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(
@@ -68,7 +78,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 SecurityContextHolder.getContext()
                         .setAuthentication(authentication);
+
+                System.out.println("🔐 AUTHENTICATION SET");
             }
+
+        }, () -> {
+            System.out.println("❌ USER NOT FOUND FOR EMAIL: " + email);
         });
 
         filterChain.doFilter(request, response);
