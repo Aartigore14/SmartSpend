@@ -26,6 +26,7 @@ function Dashboard() {
                 setDashboard(response.data);
             } catch (err) {
                 console.error("Dashboard error:", err);
+
                 setError(
                     err.response?.data?.message ||
                     "Failed to load dashboard"
@@ -50,7 +51,10 @@ function Dashboard() {
         return (
             <div className="dashboard-error">
                 <h2>{error}</h2>
-                <button onClick={logout}>Logout</button>
+
+                <button onClick={logout}>
+                    Logout
+                </button>
             </div>
         );
     }
@@ -66,8 +70,13 @@ function Dashboard() {
                 </div>
 
                 <div className="user-section">
-                    <span>Welcome, {user?.name || "User"}</span>
-                    <button onClick={logout}>Logout</button>
+                    <span>
+                        Welcome, {user?.name || "User"}
+                    </span>
+
+                    <button onClick={logout}>
+                        Logout
+                    </button>
                 </div>
             </header>
 
@@ -84,33 +93,45 @@ function Dashboard() {
 
                     <div className="summary-card income-card">
                         <div className="card-icon">💰</div>
+
                         <div>
                             <h3>Total Income</h3>
-                            <p>₹{dashboard.totalIncome?.toFixed(2) || "0.00"}</p>
+                            <p>
+                                ₹{dashboard.totalIncome?.toFixed(2) || "0.00"}
+                            </p>
                         </div>
                     </div>
 
                     <div className="summary-card expense-card">
                         <div className="card-icon">💸</div>
+
                         <div>
                             <h3>Total Expense</h3>
-                            <p>₹{dashboard.totalExpense?.toFixed(2) || "0.00"}</p>
+                            <p>
+                                ₹{dashboard.totalExpense?.toFixed(2) || "0.00"}
+                            </p>
                         </div>
                     </div>
 
                     <div className="summary-card balance-card">
                         <div className="card-icon">💵</div>
+
                         <div>
                             <h3>Balance</h3>
-                            <p>₹{dashboard.balance?.toFixed(2) || "0.00"}</p>
+                            <p>
+                                ₹{dashboard.balance?.toFixed(2) || "0.00"}
+                            </p>
                         </div>
                     </div>
 
                     <div className="summary-card savings-card">
                         <div className="card-icon">📈</div>
+
                         <div>
                             <h3>Savings Rate</h3>
-                            <p>{dashboard.savingsRate?.toFixed(2) || "0.00"}%</p>
+                            <p>
+                                {dashboard.savingsRate?.toFixed(2) || "0.00"}%
+                            </p>
                         </div>
                     </div>
 
@@ -124,7 +145,9 @@ function Dashboard() {
 
                         <div className="info-row">
                             <span>Total Transactions</span>
-                            <strong>{dashboard.totalTransactions}</strong>
+                            <strong>
+                                {dashboard.totalTransactions}
+                            </strong>
                         </div>
 
                         <div className="info-row">
@@ -140,29 +163,36 @@ function Dashboard() {
 
                         <div className="info-row">
                             <span>Active Budgets</span>
-                            <strong>{dashboard.activeBudgets}</strong>
+                            <strong>
+                                {dashboard.activeBudgets}
+                            </strong>
                         </div>
 
                         <div className="info-row">
                             <span>Budgets Exceeded</span>
-                            <strong>{dashboard.budgetsExceeded}</strong>
+                            <strong>
+                                {dashboard.budgetsExceeded}
+                            </strong>
                         </div>
 
                         <div className="info-row">
                             <span>Active Savings Goals</span>
-                            <strong>{dashboard.activeSavingsGoals}</strong>
+                            <strong>
+                                {dashboard.activeSavingsGoals}
+                            </strong>
                         </div>
 
                         <div className="info-row">
                             <span>Unread Notifications</span>
-                            <strong>{dashboard.unreadNotifications}</strong>
+                            <strong>
+                                {dashboard.unreadNotifications}
+                            </strong>
                         </div>
                     </div>
 
                 </div>
 
             </main>
-
         </div>
     );
 }

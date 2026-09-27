@@ -19,12 +19,16 @@ function Login() {
 
         try {
             await login(email, password);
+
             navigate("/dashboard");
         } catch (err) {
+            console.error("Login error:", err);
+            console.error("Response:", err.response);
+
             setError(
                 err.response?.data?.message ||
                 err.response?.data ||
-                "Login failed. Please check your email and password."
+                `Login failed (${err.response?.status || "unknown error"})`
             );
         } finally {
             setLoading(false);
@@ -38,8 +42,10 @@ function Login() {
             <h2>Login</h2>
 
             <form onSubmit={handleSubmit}>
+
                 <div>
                     <label>Email</label>
+
                     <input
                         type="email"
                         value={email}
@@ -50,6 +56,7 @@ function Login() {
 
                 <div>
                     <label>Password</label>
+
                     <input
                         type="password"
                         value={password}
@@ -64,7 +71,10 @@ function Login() {
                     </p>
                 )}
 
-                <button type="submit" disabled={loading}>
+                <button
+                    type="submit"
+                    disabled={loading}
+                >
                     {loading ? "Logging in..." : "Login"}
                 </button>
             </form>

@@ -13,10 +13,14 @@ api.interceptors.request.use(
         const savedUser = localStorage.getItem("smartspend_user");
 
         if (savedUser) {
-            const user = JSON.parse(savedUser);
+            try {
+                const user = JSON.parse(savedUser);
 
-            if (user.token) {
-                config.headers.Authorization = `Bearer ${user.token}`;
+                if (user.token) {
+                    config.headers.Authorization = `Bearer ${user.token}`;
+                }
+            } catch (error) {
+                console.error("Failed to parse saved user:", error);
             }
         }
 

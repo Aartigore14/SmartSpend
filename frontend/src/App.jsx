@@ -20,6 +20,22 @@ function App() {
                     element={<Navigate to="/login" replace />}
                 />
 
+                <Route path="/login" element={<Login />} />
+
+                <Route
+                    path="/"
+                    element={<Navigate to="/login" replace />}
+                />
+
+                <Route
+                    path="/dashboard"
+                    element={<Dashboard/>}
+                />
+
+                <Route
+                    path="/register"
+                    element={<h1>Register Coming Soon</h1>}
+                />
             </Routes>
         </BrowserRouter>
     );
