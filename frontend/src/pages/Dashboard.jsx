@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
+import "../styles/dashboard.css";
 
 function Dashboard() {
     const { user, logout } = useAuth();
@@ -19,7 +20,7 @@ function Dashboard() {
 
             try {
                 const response = await api.get(
-                    `/dashboard/users/${user.userId}`
+                    `/dashboard/user/${user.userId}`
                 );
 
                 setDashboard(response.data);
@@ -39,12 +40,16 @@ function Dashboard() {
     }, [user]);
 
     if (loading) {
-        return <h2>Loading dashboard...</h2>;
+        return (
+            <div className="dashboard-loading">
+                <h2>Loading SmartSpend...</h2>
+            </div>
+        );
     }
 
     if (error) {
         return (
-            <div>
+            <div className="dashboard-error">
                 <h2>{error}</h2>
 
                 <button onClick={logout}>
@@ -55,66 +60,139 @@ function Dashboard() {
     }
 
     return (
-        <div>
-            <h1>SmartSpend Dashboard</h1>
+        <div className="dashboard">
 
-            <p>Welcome, {user?.name}</p>
+            {/* Header */}
+            <header className="dashboard-header">
+                <div>
+                    <h1>SmartSpend</h1>
+                    <p>Personal Finance Dashboard</p>
+                </div>
 
-            <button onClick={logout}>
-                Logout
-            </button>
+                <div className="user-section">
+                    <span>
+                        Welcome, {user?.name || "User"}
+                    </span>
 
-            <div>
-                <h3>Total Income</h3>
-                <p>₹{dashboard.totalIncome}</p>
-            </div>
+                    <button onClick={logout}>
+                        Logout
+                    </button>
+                </div>
+            </header>
 
-            <div>
-                <h3>Total Expense</h3>
-                <p>₹{dashboard.totalExpense}</p>
-            </div>
+            {/* Main Content */}
+            <main className="dashboard-content">
 
-            <div>
-                <h3>Balance</h3>
-                <p>₹{dashboard.balance}</p>
-            </div>
+                <div className="dashboard-title">
+                    <h2>Dashboard</h2>
+                    <p>Here's your financial overview</p>
+                </div>
 
-            <div>
-                <h3>Savings Rate</h3>
-                <p>
-                    {dashboard.savingsRate?.toFixed(2)}%
-                </p>
-            </div>
+                {/* Summary Cards */}
+                <div className="summary-grid">
 
-            <div>
-                <h3>Total Transactions</h3>
-                <p>{dashboard.totalTransactions}</p>
-            </div>
+                    <div className="summary-card income-card">
+                        <div className="card-icon">💰</div>
 
-            <div>
-                <h3>Top Spending Category</h3>
-                <p>{dashboard.topSpendingCategory}</p>
-            </div>
+                        <div>
+                            <h3>Total Income</h3>
+                            <p>
+                                ₹{dashboard.totalIncome?.toFixed(2) || "0.00"}
+                            </p>
+                        </div>
+                    </div>
 
-            <div>
-                <h3>Active Budgets</h3>
-                <p>{dashboard.activeBudgets}</p>
-            </div>
+                    <div className="summary-card expense-card">
+                        <div className="card-icon">💸</div>
 
-            <div>
-                <h3>Budgets Exceeded</h3>
-                <p>{dashboard.budgetsExceeded}</p>
-            </div>
+                        <div>
+                            <h3>Total Expense</h3>
+                            <p>
+                                ₹{dashboard.totalExpense?.toFixed(2) || "0.00"}
+                            </p>
+                        </div>
+                    </div>
 
-            <div>
-                <h3>Active Savings Goals</h3>
-                <p>{dashboard.activeSavingsGoals}</p>
-            </div>
+                    <div className="summary-card balance-card">
+                        <div className="card-icon">💵</div>
 
-            <div>
-                <h3>Unread Notifications</h3>
-                <p>{dashboard.unreadNotifications}</p>
-            </div>
+                        <div>
+                            <h3>Balance</h3>
+                            <p>
+                                ₹{dashboard.balance?.toFixed(2) || "0.00"}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="summary-card savings-card">
+                        <div className="card-icon">📈</div>
+
+                        <div>
+                            <h3>Savings Rate</h3>
+                            <p>
+                                {dashboard.savingsRate?.toFixed(2) || "0.00"}%
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+                {/* Additional Information */}
+                <div className="dashboard-grid">
+
+                    <div className="dashboard-panel">
+                        <h3>📊 Spending Overview</h3>
+
+                        <div className="info-row">
+                            <span>Total Transactions</span>
+                            <strong>
+                                {dashboard.totalTransactions}
+                            </strong>
+                        </div>
+
+                        <div className="info-row">
+                            <span>Top Spending Category</span>
+                            <strong>
+                                {dashboard.topSpendingCategory || "None"}
+                            </strong>
+                        </div>
+                    </div>
+
+                    <div className="dashboard-panel">
+                        <h3>💰 Financial Summary</h3>
+
+                        <div className="info-row">
+                            <span>Active Budgets</span>
+                            <strong>
+                                {dashboard.activeBudgets}
+                            </strong>
+                        </div>
+
+                        <div className="info-row">
+                            <span>Budgets Exceeded</span>
+                            <strong>
+                                {dashboard.budgetsExceeded}
+                            </strong>
+                        </div>
+
+                        <div className="info-row">
+                            <span>Active Savings Goals</span>
+                            <strong>
+                                {dashboard.activeSavingsGoals}
+                            </strong>
+                        </div>
+
+                        <div className="info-row">
+                            <span>Unread Notifications</span>
+                            <strong>
+                                {dashboard.unreadNotifications}
+                            </strong>
+                        </div>
+                    </div>
+
+                </div>
+
+            </main>
         </div>
     );
 }

@@ -11,7 +11,7 @@ function Login() {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
 
-    const handleLogin = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         setError("");
@@ -41,7 +41,8 @@ function Login() {
 
             <h2>Login</h2>
 
-            <form onSubmit={handleLogin}>
+            <form onSubmit={handleSubmit}>
+
                 <div>
                     <label>Email</label>
 
@@ -64,7 +65,11 @@ function Login() {
                     />
                 </div>
 
-                {error && <p>{error}</p>}
+                {error && (
+                    <p style={{ color: "red" }}>
+                        {error}
+                    </p>
+                )}
 
                 <button
                     type="submit"
@@ -76,7 +81,6 @@ function Login() {
 
             <p>
                 Don't have an account?{" "}
-
                 <button
                     type="button"
                     onClick={() => navigate("/register")}
