@@ -1,53 +1,32 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../services/api";
+import { useAuth } from "../context/AuthContext";
 
 function Login() {
     const navigate = useNavigate();
+    const { login } = useAuth();
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
 
-    const handleLogin = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+
         setError("");
         setLoading(true);
 
         try {
-            const response = await api.post("/auth/login", null, {
-                params: {
-                    email,
-                    password,
-                },
-            });
-
-            const { token, userId, name, role } = response.data;
-
-            localStorage.setItem("token", token);
-            localStorage.setItem(
-                "user",
-                JSON.stringify({
-                    userId,
-                    name,
-                    email,
-                    role,
-                })
-            );
-
+            await login(email, password);
             navigate("/dashboard");
-
         } catch (err) {
-    console.log("Login error:", err);
-    console.log("Response:", err.response);
-
-    setError(
-        err.response?.data?.message ||
-        err.response?.data ||
-        `Login failed (${err.response?.status || "unknown error"})`
-    );
-} finally {
+            setError(
+                err.response?.data?.message ||
+                err.response?.data ||
+                "Login failed. Please check your email and password."
+            );
+        } finally {
             setLoading(false);
         }
     };
@@ -55,9 +34,10 @@ function Login() {
     return (
         <div>
             <h1>SmartSpend</h1>
+
             <h2>Login</h2>
 
-            <form onSubmit={handleLogin}>
+            <form onSubmit={handleSubmit}>
                 <div>
                     <label>Email</label>
                     <input
@@ -78,7 +58,11 @@ function Login() {
                     />
                 </div>
 
-                {error && <p>{error}</p>}
+                {error && (
+                    <p style={{ color: "red" }}>
+                        {error}
+                    </p>
+                )}
 
                 <button type="submit" disabled={loading}>
                     {loading ? "Logging in..." : "Login"}
@@ -87,7 +71,10 @@ function Login() {
 
             <p>
                 Don't have an account?{" "}
-                <button type="button" onClick={() => navigate("/register")}>
+                <button
+                    type="button"
+                    onClick={() => navigate("/register")}
+                >
                     Register
                 </button>
             </p>

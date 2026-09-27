@@ -109,3 +109,42 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+.navbar {
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 28px;
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    box-sizing: border-box;
+}
+
+.navbar-brand h2 {
+    margin: 0;
+    font-size: 22px;
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.welcome-text {
+    font-size: 14px;
+}
+
+.logout-button {
+    border: none;
+    padding: 9px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    background: #111827;
+    color: white;
+    font-size: 14px;
+}
+
+.logout-button:hover {
+    opacity: 0.9;
+}
