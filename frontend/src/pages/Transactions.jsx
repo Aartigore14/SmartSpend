@@ -53,6 +53,7 @@ function Transactions() {
             setCategories(categoriesResponse.data);
         } catch (err) {
             console.error("Failed to load transactions:", err);
+
             setError(
                 err.response?.data?.message ||
                 "Failed to load transactions"
@@ -69,6 +70,9 @@ function Transactions() {
         setFormData((previous) => ({
             ...previous,
             [name]: value,
+
+            // Clear category when transaction type changes
+            ...(name === "type" ? { categoryId: "" } : {}),
         }));
     };
 
@@ -84,6 +88,7 @@ function Transactions() {
             transactionDate: new Date().toISOString().split("T")[0],
         });
 
+        setError("");
         setShowForm(true);
     };
 
@@ -92,13 +97,14 @@ function Transactions() {
         setEditingTransaction(transaction);
 
         setFormData({
-            type: transaction.type,
+            type: transaction.type?.toUpperCase() || "EXPENSE",
             categoryId: transaction.categoryId,
             amount: transaction.amount,
             description: transaction.description || "",
             transactionDate: transaction.transactionDate,
         });
 
+        setError("");
         setShowForm(true);
     };
 
@@ -123,7 +129,7 @@ function Transactions() {
             const transactionData = {
                 userId: user.userId,
                 categoryId: Number(formData.categoryId),
-                type: formData.type,
+                type: formData.type.toUpperCase(),
                 amount: Number(formData.amount),
                 description: formData.description,
                 transactionDate: formData.transactionDate,
@@ -135,7 +141,10 @@ function Transactions() {
                     transactionData
                 );
             } else {
-                await api.post("/transactions", transactionData);
+                await api.post(
+                    "/transactions",
+                    transactionData
+                );
             }
 
             setShowForm(false);
@@ -170,7 +179,9 @@ function Transactions() {
             await api.delete(`/transactions/${id}`);
 
             setTransactions((previous) =>
-                previous.filter((transaction) => transaction.id !== id)
+                previous.filter(
+                    (transaction) => transaction.id !== id
+                )
             );
         } catch (err) {
             console.error("Failed to delete transaction:", err);
@@ -185,30 +196,40 @@ function Transactions() {
     // Get category name
     const getCategoryName = (categoryId) => {
         const category = categories.find(
-            (item) => item.id === categoryId
+            (item) => Number(item.id) === Number(categoryId)
         );
 
         return category ? category.name : "Unknown";
     };
 
     // Filter transactions
-    const filteredTransactions = transactions.filter((transaction) => {
-        const matchesType =
-            typeFilter === "ALL" ||
-            transaction.type === typeFilter;
+    const filteredTransactions = transactions.filter(
+        (transaction) => {
+            const transactionType =
+                transaction.type?.toUpperCase();
 
-        const categoryName = getCategoryName(transaction.categoryId);
+            const matchesType =
+                typeFilter === "ALL" ||
+                transactionType === typeFilter;
 
-        const searchText = (
-            `${categoryName} ${transaction.description || ""}`
-        ).toLowerCase();
+            const categoryName = getCategoryName(
+                transaction.categoryId
+            );
 
-        const matchesSearch = searchText.includes(
-            searchTerm.toLowerCase()
-        );
+            const searchText = (
+                `${categoryName} ${
+                    transaction.description || ""
+                }`
+            ).toLowerCase();
 
-        return matchesType && matchesSearch;
-    });
+            const matchesSearch =
+                searchText.includes(
+                    searchTerm.toLowerCase()
+                );
+
+            return matchesType && matchesSearch;
+        }
+    );
 
     if (loading) {
         return (
@@ -225,7 +246,9 @@ function Transactions() {
             <div className="transactions-header">
                 <div>
                     <h1>Transactions</h1>
-                    <p>Manage your income and expenses</p>
+                    <p>
+                        Manage your income and expenses
+                    </p>
                 </div>
 
                 <button
@@ -247,55 +270,90 @@ function Transactions() {
             <div className="transaction-toolbar">
 
                 <div className="transaction-filters">
+
                     <button
-                        className={typeFilter === "ALL" ? "active" : ""}
-                        onClick={() => setTypeFilter("ALL")}
+                        className={
+                            typeFilter === "ALL"
+                                ? "active"
+                                : ""
+                        }
+                        onClick={() =>
+                            setTypeFilter("ALL")
+                        }
                     >
                         All
                     </button>
 
                     <button
-                        className={typeFilter === "INCOME" ? "active" : ""}
-                        onClick={() => setTypeFilter("INCOME")}
+                        className={
+                            typeFilter === "INCOME"
+                                ? "active"
+                                : ""
+                        }
+                        onClick={() =>
+                            setTypeFilter("INCOME")
+                        }
                     >
                         Income
                     </button>
 
                     <button
-                        className={typeFilter === "EXPENSE" ? "active" : ""}
-                        onClick={() => setTypeFilter("EXPENSE")}
+                        className={
+                            typeFilter === "EXPENSE"
+                                ? "active"
+                                : ""
+                        }
+                        onClick={() =>
+                            setTypeFilter("EXPENSE")
+                        }
                     >
                         Expense
                     </button>
+
                 </div>
 
                 <input
                     type="text"
                     placeholder="Search transactions..."
                     value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onChange={(e) =>
+                        setSearchTerm(e.target.value)
+                    }
                     className="transaction-search"
                 />
+
             </div>
 
             {/* Transactions Table */}
             <div className="transactions-card">
 
                 {filteredTransactions.length === 0 ? (
+
                     <div className="empty-transactions">
-                        <h3>No transactions found</h3>
+
+                        <h3>
+                            No transactions found
+                        </h3>
+
                         <p>
-                            Add your first transaction to start
-                            tracking your finances.
+                            Add your first transaction
+                            to start tracking your finances.
                         </p>
 
-                        <button onClick={handleAddClick}>
+                        <button
+                            onClick={handleAddClick}
+                        >
                             + Add Transaction
                         </button>
+
                     </div>
+
                 ) : (
+
                     <div className="transactions-table-wrapper">
+
                         <table className="transactions-table">
+
                             <thead>
                                 <tr>
                                     <th>Date</th>
@@ -308,85 +366,111 @@ function Transactions() {
                             </thead>
 
                             <tbody>
+
                                 {filteredTransactions.map(
-                                    (transaction) => (
-                                        <tr key={transaction.id}>
+                                    (transaction) => {
 
-                                            <td>
-                                                {transaction.transactionDate}
-                                            </td>
+                                        const transactionType =
+                                            transaction.type?.toUpperCase();
 
-                                            <td>
-                                                {getCategoryName(
-                                                    transaction.categoryId
-                                                )}
-                                            </td>
+                                        const isIncome =
+                                            transactionType ===
+                                            "INCOME";
 
-                                            <td>
-                                                {transaction.description ||
-                                                    "—"}
-                                            </td>
-
-                                            <td>
-                                                <span
-                                                    className={
-                                                        transaction.type ===
-                                                        "INCOME"
-                                                            ? "transaction-type income"
-                                                            : "transaction-type expense"
-                                                    }
-                                                >
-                                                    {transaction.type}
-                                                </span>
-                                            </td>
-
-                                            <td
-                                                className={
-                                                    transaction.type ===
-                                                    "INCOME"
-                                                        ? "amount income"
-                                                        : "amount expense"
+                                        return (
+                                            <tr
+                                                key={
+                                                    transaction.id
                                                 }
                                             >
-                                                {transaction.type ===
-                                                "INCOME"
-                                                    ? "+"
-                                                    : "-"}
-                                                ₹
-                                                {Number(
-                                                    transaction.amount
-                                                ).toFixed(2)}
-                                            </td>
 
-                                            <td>
-                                                <div className="transaction-actions">
-                                                    <button
-                                                        onClick={() =>
-                                                            handleEditClick(
-                                                                transaction
-                                                            )
+                                                <td>
+                                                    {
+                                                        transaction.transactionDate
+                                                    }
+                                                </td>
+
+                                                <td>
+                                                    {getCategoryName(
+                                                        transaction.categoryId
+                                                    )}
+                                                </td>
+
+                                                <td>
+                                                    {
+                                                        transaction.description ||
+                                                        "—"
+                                                    }
+                                                </td>
+
+                                                <td>
+
+                                                    <span
+                                                        className={
+                                                            isIncome
+                                                                ? "transaction-type income"
+                                                                : "transaction-type expense"
                                                         }
                                                     >
-                                                        Edit
-                                                    </button>
+                                                        {transactionType}
+                                                    </span>
 
-                                                    <button
-                                                        onClick={() =>
-                                                            handleDelete(
-                                                                transaction.id
-                                                            )
-                                                        }
-                                                    >
-                                                        Delete
-                                                    </button>
-                                                </div>
-                                            </td>
+                                                </td>
 
-                                        </tr>
-                                    )
+                                                <td
+                                                    className={
+                                                        isIncome
+                                                            ? "amount income"
+                                                            : "amount expense"
+                                                    }
+                                                >
+                                                    {isIncome
+                                                        ? "+"
+                                                        : "-"}
+
+                                                    ₹
+                                                    {Number(
+                                                        transaction.amount
+                                                    ).toFixed(2)}
+                                                </td>
+
+                                                <td>
+
+                                                    <div className="transaction-actions">
+
+                                                        <button
+                                                            onClick={() =>
+                                                                handleEditClick(
+                                                                    transaction
+                                                                )
+                                                            }
+                                                        >
+                                                            Edit
+                                                        </button>
+
+                                                        <button
+                                                            onClick={() =>
+                                                                handleDelete(
+                                                                    transaction.id
+                                                                )
+                                                            }
+                                                        >
+                                                            Delete
+                                                        </button>
+
+                                                    </div>
+
+                                                </td>
+
+                                            </tr>
+                                        );
+                                    }
                                 )}
+
                             </tbody>
+
                         </table>
+
                     </div>
                 )}
 
@@ -394,12 +478,15 @@ function Transactions() {
 
             {/* Add/Edit Modal */}
             {showForm && (
+
                 <div className="transaction-modal-overlay">
 
                     <div className="transaction-modal">
 
                         <div className="modal-header">
+
                             <div>
+
                                 <h2>
                                     {editingTransaction
                                         ? "Edit Transaction"
@@ -407,29 +494,38 @@ function Transactions() {
                                 </h2>
 
                                 <p>
-                                    Enter your transaction details
+                                    Enter your transaction
+                                    details
                                 </p>
+
                             </div>
 
                             <button
                                 className="modal-close"
-                                onClick={() => setShowForm(false)}
+                                onClick={() =>
+                                    setShowForm(false)
+                                }
                             >
                                 ×
                             </button>
+
                         </div>
 
                         <form onSubmit={handleSubmit}>
 
                             {/* Type */}
                             <div className="form-group">
-                                <label>Type</label>
+
+                                <label>
+                                    Type
+                                </label>
 
                                 <select
                                     name="type"
                                     value={formData.type}
                                     onChange={handleChange}
                                 >
+
                                     <option value="EXPENSE">
                                         Expense
                                     </option>
@@ -437,12 +533,17 @@ function Transactions() {
                                     <option value="INCOME">
                                         Income
                                     </option>
+
                                 </select>
+
                             </div>
 
                             {/* Category */}
                             <div className="form-group">
-                                <label>Category</label>
+
+                                <label>
+                                    Category
+                                </label>
 
                                 <select
                                     name="categoryId"
@@ -450,6 +551,7 @@ function Transactions() {
                                     onChange={handleChange}
                                     required
                                 >
+
                                     <option value="">
                                         Select category
                                     </option>
@@ -457,23 +559,35 @@ function Transactions() {
                                     {categories
                                         .filter(
                                             (category) =>
-                                                category.type ===
-                                                formData.type
+                                                category.type
+                                                    ?.toUpperCase() ===
+                                                formData.type.toUpperCase()
                                         )
                                         .map((category) => (
+
                                             <option
-                                                key={category.id}
-                                                value={category.id}
+                                                key={
+                                                    category.id
+                                                }
+                                                value={
+                                                    category.id
+                                                }
                                             >
                                                 {category.name}
                                             </option>
+
                                         ))}
+
                                 </select>
+
                             </div>
 
                             {/* Amount */}
                             <div className="form-group">
-                                <label>Amount</label>
+
+                                <label>
+                                    Amount
+                                </label>
 
                                 <input
                                     type="number"
