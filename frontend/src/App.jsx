@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Transactions from "./pages/Transactions";
+import Categories from "./pages/Categories";
 
 function App() {
     return (
@@ -17,6 +18,7 @@ function App() {
                 <Route path="/dashboard" element={<Dashboard />} /> 
 
                 <Route path="/transactions" element={<Transactions/>}/>
+                 <Route path="/categories" element={<Categories/>}/>
 
                 <Route
                     path="/"
@@ -39,6 +41,7 @@ function App() {
                     path="/register"
                     element={<h1>Register Coming Soon</h1>}
                 />
+            
             </Routes>
         </BrowserRouter>
     );
