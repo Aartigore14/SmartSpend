@@ -1,0 +1,654 @@
+/* ================================
+   Categories Page
+================================ */
+
+.categories-page {
+    min-height: 100vh;
+    background: #f5f7fb;
+    padding: 32px;
+}
+
+/* ================================
+   Header
+================================ */
+
+.categories-header {
+    max-width: 1200px;
+    margin: 0 auto 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.categories-header h1 {
+    margin: 0;
+    font-size: 30px;
+    color: #1f2937;
+}
+
+.categories-header p {
+    margin: 6px 0 0;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.add-category-button {
+    border: none;
+    background: #2563eb;
+    color: white;
+
+    padding: 12px 20px;
+    border-radius: 8px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.add-category-button:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+}
+
+/* ================================
+   Error
+================================ */
+
+.category-error {
+    max-width: 1200px;
+    margin: 0 auto 20px;
+
+    padding: 12px 16px;
+
+    border-radius: 8px;
+
+    background: #fef2f2;
+    color: #dc2626;
+
+    border: 1px solid #fecaca;
+
+    font-size: 14px;
+}
+
+/* ================================
+   Toolbar
+================================ */
+
+.category-toolbar {
+    max-width: 1200px;
+    margin: 0 auto 20px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 20px;
+}
+
+.category-filters {
+    display: flex;
+    gap: 8px;
+}
+
+.category-filters button {
+    border: 1px solid #d1d5db;
+
+    background: white;
+    color: #4b5563;
+
+    padding: 9px 16px;
+
+    border-radius: 7px;
+
+    font-size: 14px;
+
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.category-filters button:hover {
+    background: #f3f4f6;
+}
+
+.category-filters button.active {
+    background: #2563eb;
+    color: white;
+    border-color: #2563eb;
+}
+
+.category-search {
+    width: 260px;
+
+    padding: 10px 14px;
+
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+
+    outline: none;
+
+    font-size: 14px;
+    background: white;
+}
+
+.category-search:focus {
+    border-color: #2563eb;
+
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* ================================
+   Categories Card
+================================ */
+
+.categories-card {
+    max-width: 1200px;
+    margin: 0 auto;
+
+    background: white;
+
+    border-radius: 12px;
+
+    border: 1px solid #e5e7eb;
+
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.04);
+
+    padding: 22px;
+}
+
+/* ================================
+   Categories Grid
+================================ */
+
+.categories-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 16px;
+}
+
+.category-item {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 18px;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    transition: 0.2s ease;
+}
+
+.category-item:hover {
+    border-color: #cbd5e1;
+
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.05);
+
+    transform: translateY(-1px);
+}
+
+/* ================================
+   Category Information
+================================ */
+
+.category-info {
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    min-width: 0;
+}
+
+.category-icon {
+    width: 42px;
+    height: 42px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.category-icon.income {
+    background: #ecfdf5;
+    color: #059669;
+}
+
+.category-icon.expense {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.category-info h3 {
+    margin: 0 0 5px;
+
+    color: #1f2937;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    word-break: break-word;
+}
+
+/* ================================
+   Category Type
+================================ */
+
+.category-type {
+    display: inline-block;
+
+    padding: 4px 9px;
+
+    border-radius: 20px;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    letter-spacing: 0.3px;
+}
+
+.category-type.income {
+    background: #ecfdf5;
+    color: #059669;
+}
+
+.category-type.expense {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+/* ================================
+   Category Actions
+================================ */
+
+.category-actions {
+    display: flex;
+
+    gap: 7px;
+
+    flex-shrink: 0;
+}
+
+.category-actions button {
+    border: 1px solid #d1d5db;
+
+    background: white;
+
+    color: #374151;
+
+    padding: 7px 11px;
+
+    border-radius: 6px;
+
+    font-size: 12px;
+
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.category-actions button:first-child:hover {
+    background: #eff6ff;
+
+    color: #2563eb;
+
+    border-color: #93c5fd;
+}
+
+.category-actions button:last-child:hover {
+    background: #fef2f2;
+
+    color: #dc2626;
+
+    border-color: #fca5a5;
+}
+
+/* ================================
+   Empty State
+================================ */
+
+.empty-categories {
+    padding: 70px 20px;
+
+    text-align: center;
+}
+
+.empty-category-icon {
+    font-size: 42px;
+
+    margin-bottom: 12px;
+}
+
+.empty-categories h3 {
+    margin: 0 0 8px;
+
+    color: #374151;
+
+    font-size: 18px;
+}
+
+.empty-categories p {
+    margin: 0 0 20px;
+
+    color: #6b7280;
+
+    font-size: 14px;
+}
+
+.empty-categories button {
+    border: none;
+
+    background: #2563eb;
+    color: white;
+
+    padding: 10px 18px;
+
+    border-radius: 7px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.empty-categories button:hover {
+    background: #1d4ed8;
+}
+
+/* ================================
+   Modal Overlay
+================================ */
+
+.category-modal-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(17, 24, 39, 0.5);
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    z-index: 1000;
+}
+
+/* ================================
+   Modal
+================================ */
+
+.category-modal {
+    width: 100%;
+    max-width: 500px;
+
+    background: white;
+
+    border-radius: 14px;
+
+    padding: 28px;
+
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.18);
+}
+
+/* ================================
+   Modal Header
+================================ */
+
+.modal-header {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: flex-start;
+
+    margin-bottom: 24px;
+}
+
+.modal-header h2 {
+    margin: 0;
+
+    color: #1f2937;
+
+    font-size: 22px;
+}
+
+.modal-header p {
+    margin: 5px 0 0;
+
+    color: #6b7280;
+
+    font-size: 13px;
+}
+
+.modal-close {
+    border: none;
+
+    background: transparent;
+
+    color: #6b7280;
+
+    font-size: 28px;
+    line-height: 1;
+
+    cursor: pointer;
+}
+
+.modal-close:hover {
+    color: #111827;
+}
+
+/* ================================
+   Form
+================================ */
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #374151;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 11px 12px;
+
+    border: 1px solid #d1d5db;
+
+    border-radius: 7px;
+
+    background: white;
+
+    color: #1f2937;
+
+    font-size: 14px;
+
+    outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #2563eb;
+
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* ================================
+   Modal Actions
+================================ */
+
+.modal-actions {
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    margin-top: 25px;
+}
+
+.cancel-button,
+.save-button {
+    padding: 10px 18px;
+
+    border-radius: 7px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.cancel-button {
+    background: white;
+
+    color: #374151;
+
+    border: 1px solid #d1d5db;
+}
+
+.cancel-button:hover {
+    background: #f9fafb;
+}
+
+.save-button {
+    border: none;
+
+    background: #2563eb;
+    color: white;
+}
+
+.save-button:hover {
+    background: #1d4ed8;
+}
+
+.save-button:disabled {
+    opacity: 0.6;
+
+    cursor: not-allowed;
+}
+
+/* ================================
+   Responsive
+================================ */
+
+@media (max-width: 900px) {
+
+    .categories-page {
+        padding: 24px;
+    }
+
+    .categories-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+    .category-toolbar {
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+    .category-search {
+        width: 100%;
+
+        box-sizing: border-box;
+    }
+
+    .categories-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .categories-page {
+        padding: 16px;
+    }
+
+    .categories-header h1 {
+        font-size: 25px;
+    }
+
+    .add-category-button {
+        width: 100%;
+    }
+
+    .category-filters {
+        width: 100%;
+    }
+
+    .category-filters button {
+        flex: 1;
+    }
+
+    .categories-card {
+        padding: 14px;
+    }
+
+    .category-item {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+    .category-actions {
+        width: 100%;
+    }
+
+    .category-actions button {
+        flex: 1;
+    }
+
+    .category-modal {
+        padding: 22px;
+    }
+
+    .modal-actions {
+        flex-direction: column-reverse;
+    }
+
+    .cancel-button,
+    .save-button {
+        width: 100%;
+    }
+}
