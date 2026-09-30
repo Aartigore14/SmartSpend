@@ -6,6 +6,7 @@ import Dashboard from "./pages/Dashboard";
 import Transactions from "./pages/Transactions";
 import Categories from "./pages/Categories";
 import Budgets from "./pages/Budgets";
+import SavingsGoals from "./pages/SavingsGoals";
 
 function App() {
     return (
@@ -19,8 +20,12 @@ function App() {
                 <Route path="/dashboard" element={<Dashboard />} /> 
 
                 <Route path="/transactions" element={<Transactions/>}/>
+
                  <Route path="/categories" element={<Categories/>}/>
+
                  <Route path="/budgets" element={<Budgets/>}/>
+
+                 <Route path="/savings-goals" element={<SavingsGoals/>} />
 
                 <Route
                     path="/"
