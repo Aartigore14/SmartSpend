@@ -10,6 +10,7 @@ import SavingsGoals from "./pages/SavingsGoals";
 import RecurringTransactions from "./pages/RecurringTransactions";
 import Notifications from "./pages/Notifications";
 import Analytics from "./pages/Analytics";
+import AIInsights from "./pages/AIInsights";
 
 function App() {
     return (
@@ -20,42 +21,44 @@ function App() {
 
                 <Route path="/register" element={<Register />} />
 
-                <Route path="/dashboard" element={<Dashboard />} /> 
+                <Route path="/dashboard" element={<Dashboard />} />
 
-                <Route path="/transactions" element={<Transactions/>}/>
+                <Route path="/transactions" element={<Transactions />} />
 
-                 <Route path="/categories" element={<Categories/>}/>
+                <Route path="/categories" element={<Categories />} />
 
-                 <Route path="/budgets" element={<Budgets/>}/>
+                <Route path="/budgets" element={<Budgets />} />
 
-                 <Route path="/savings-goals" element={<SavingsGoals/>} />
+                <Route
+                    path="/savings-goals"
+                    element={<SavingsGoals />}
+                />
 
-                 <Route path="/recurring-transactions" element={<RecurringTransactions/>}/>
-                 <Route path="/notifications" element = {<Notifications/>}/>
-                 <Route path="/analytics" element = {<Analytics/>}/>
+                <Route
+                    path="/recurring-transactions"
+                    element={<RecurringTransactions />}
+                />
+
+                <Route
+                    path="/notifications"
+                    element={<Notifications />}
+                />
+
+                <Route
+                    path="/analytics"
+                    element={<Analytics />}
+                />
+
+                <Route
+                    path="/ai-insights"
+                    element={<AIInsights />}
+                />
 
                 <Route
                     path="/"
                     element={<Navigate to="/login" replace />}
                 />
 
-                <Route path="/login" element={<Login />} />
-
-                <Route
-                    path="/"
-                    element={<Navigate to="/login" replace />}
-                />
-
-                <Route
-                    path="/dashboard"
-                    element={<Dashboard/>}
-                />
-
-                <Route
-                    path="/register"
-                    element={<h1>Register Coming Soon</h1>}
-                />
-            
             </Routes>
         </BrowserRouter>
     );
