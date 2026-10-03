@@ -9,6 +9,7 @@ import Budgets from "./pages/Budgets";
 import SavingsGoals from "./pages/SavingsGoals";
 import RecurringTransactions from "./pages/RecurringTransactions";
 import Notifications from "./pages/Notifications";
+import Analytics from "./pages/Analytics";
 
 function App() {
     return (
@@ -31,6 +32,7 @@ function App() {
 
                  <Route path="/recurring-transactions" element={<RecurringTransactions/>}/>
                  <Route path="/notifications" element = {<Notifications/>}/>
+                 <Route path="/analytics" element = {<Analytics/>}/>
 
                 <Route
                     path="/"
