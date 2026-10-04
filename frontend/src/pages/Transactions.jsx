@@ -1,3 +1,4 @@
+import Navbar from "../components/Navbar";
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
@@ -233,13 +234,16 @@ function Transactions() {
 
     if (loading) {
         return (
+            <><Navbar/>
             <div className="transactions-page">
                 <h2>Loading transactions...</h2>
             </div>
+            </>
         );
     }
 
     return (
+        <><Navbar/>
         <div className="transactions-page">
 
             {/* Header */}
@@ -661,6 +665,7 @@ function Transactions() {
             )}
 
         </div>
+        </>
     );
 }
 

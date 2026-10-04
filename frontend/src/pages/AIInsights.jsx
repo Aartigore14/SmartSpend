@@ -1,3 +1,4 @@
+import Navbar from "../components/Navbar";
 import { useEffect, useState } from "react";
 import api from "../services/api";
 import "../styles/ai-insights.css";
@@ -88,6 +89,7 @@ function AIInsights() {
     };
 
     return (
+        <><Navbar/>
         <div className="ai-insights-page">
 
             {/* Header */}
@@ -258,6 +260,7 @@ function AIInsights() {
                 </div>
             )}
         </div>
+        </>
     );
 }
 

@@ -1,10 +1,11 @@
+import Navbar from "../components/Navbar";
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
 import "../styles/dashboard.css";
 
 function Dashboard() {
-    const { user, logout } = useAuth();
+    const { user, logout}= useAuth();
 
     const [dashboard, setDashboard] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -60,25 +61,9 @@ function Dashboard() {
     }
 
     return (
+        <>
+        <Navbar/>
         <div className="dashboard">
-
-            {/* Header */}
-            <header className="dashboard-header">
-                <div>
-                    <h1>SmartSpend</h1>
-                    <p>Personal Finance Dashboard</p>
-                </div>
-
-                <div className="user-section">
-                    <span>
-                        Welcome, {user?.name || "User"}
-                    </span>
-
-                    <button onClick={logout}>
-                        Logout
-                    </button>
-                </div>
-            </header>
 
             {/* Main Content */}
             <main className="dashboard-content">
@@ -194,6 +179,7 @@ function Dashboard() {
 
             </main>
         </div>
+        </>
     );
 }
 
