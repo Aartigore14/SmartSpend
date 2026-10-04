@@ -1,3 +1,4 @@
+import Navbar from "../components/Navbar";
 import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
@@ -73,16 +74,19 @@ function Analytics() {
 
   if (loading) {
     return (
+        <><Navbar/>
       <div className="analytics-page">
         <div className="analytics-loading">
           Loading analytics...
         </div>
       </div>
+      </>
     );
   }
 
   if (!analytics) {
     return (
+        <><Navbar/>
       <div className="analytics-page">
         <div className="analytics-empty">
           <h2>No analytics available</h2>
@@ -92,6 +96,7 @@ function Analytics() {
           </p>
         </div>
       </div>
+      </>
     );
   }
 
@@ -100,6 +105,7 @@ function Analytics() {
   );
 
   return (
+    <><Navbar/>
     <div className="analytics-page">
 
       {/* Header */}
@@ -447,6 +453,7 @@ function Analytics() {
       </div>
 
     </div>
+    </>
   );
 }
 
