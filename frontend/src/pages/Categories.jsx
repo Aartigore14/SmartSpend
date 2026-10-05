@@ -1,3 +1,4 @@
+import Navbar from "../components/Navbar";
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
@@ -192,13 +193,16 @@ function Categories() {
 
     if (loading) {
         return (
+            <><Navbar/>
             <div className="categories-page">
                 <h2>Loading categories...</h2>
             </div>
+            </>
         );
     }
 
     return (
+        <><Navbar/>
         <div className="categories-page">
 
             {/* Header */}
@@ -514,6 +518,7 @@ function Categories() {
             )}
 
         </div>
+        </>
     );
 }
 

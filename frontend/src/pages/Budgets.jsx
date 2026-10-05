@@ -1,3 +1,4 @@
+import Navbar from "../components/Navbar";
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
@@ -233,13 +234,17 @@ function Budgets() {
 
     if (loading) {
         return (
+            <><Navbar/>
             <div className="budgets-page">
                 <h2>Loading budgets...</h2>
             </div>
+            </>
         );
+    
     }
 
     return (
+        <><Navbar/>
         <div className="budgets-page">
 
             {/* Header */}
@@ -752,6 +757,7 @@ function Budgets() {
             )}
 
         </div>
+        </>
     );
 }
 

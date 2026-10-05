@@ -1,3 +1,4 @@
+import Navbar from "../components/Navbar";
 import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
@@ -168,15 +169,18 @@ function Notifications() {
 
   if (loading) {
     return (
+        <><Navbar/>
       <div className="notifications-page">
         <div className="notifications-loading">
           Loading notifications...
         </div>
       </div>
+      </>
     );
   }
 
   return (
+     <><Navbar/>
     <div className="notifications-page">
 
       {/* Header */}
@@ -418,6 +422,7 @@ function Notifications() {
       )}
 
     </div>
+    </>
   );
 }
 

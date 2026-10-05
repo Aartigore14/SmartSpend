@@ -1,7 +1,9 @@
+import Navbar from "../components/Navbar";
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
 import "../styles/savings-goals.css";
+
 
 const initialForm = {
   name: "",
@@ -192,15 +194,18 @@ function SavingsGoals() {
 
   if (loading) {
     return (
+      <><Navbar/>
       <div className="savings-page">
         <div className="savings-loading">
           Loading savings goals...
         </div>
       </div>
+      </>
     );
   }
 
   return (
+    <><Navbar/>
     <div className="savings-page">
 
       {/* Header */}
@@ -548,6 +553,7 @@ function SavingsGoals() {
       )}
 
     </div>
+    </>
   );
 }
 
