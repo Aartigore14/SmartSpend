@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "../styles/auth.css";
 
 function Register() {
     const navigate = useNavigate();
@@ -11,20 +12,22 @@ function Register() {
 
     const [message, setMessage] = useState("");
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const handleRegister = async (e) => {
         e.preventDefault();
 
         setMessage("");
         setError("");
+        setLoading(true);
 
         try {
             await axios.post(
                 "http://localhost:8080/api/auth/register",
                 {
-                    name: name,
-                    email: email,
-                    password: password,
+                    name,
+                    email,
+                    password,
                     role: "USER"
                 }
             );
@@ -41,73 +44,95 @@ function Register() {
             } else {
                 setError("Registration failed. Please try again.");
             }
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
-        <div>
-            <h1>SmartSpend</h1>
-            <h2>Register</h2>
+        <div className="auth-page">
+            <div className="auth-card">
 
-            <form onSubmit={handleRegister}>
-
-                <div>
-                    <label>Name</label>
-                    <br />
-                    <input
-                        type="text"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        required
-                    />
+                <div className="auth-brand">
+                    <h1>SmartSpend</h1>
+                    <p>Start managing your finances smarter.</p>
                 </div>
 
-                <br />
-
-                <div>
-                    <label>Email</label>
-                    <br />
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
+                <div className="auth-heading">
+                    <h2>Create Account</h2>
+                    <p>Register to get started with SmartSpend</p>
                 </div>
 
-                <br />
+                <form onSubmit={handleRegister} className="auth-form">
 
-                <div>
-                    <label>Password</label>
-                    <br />
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
+                    <div className="form-group">
+                        <label htmlFor="name">Full Name</label>
+                        <input
+                            id="name"
+                            type="text"
+                            placeholder="Enter your name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            required
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="register-email">Email</label>
+                        <input
+                            id="register-email"
+                            type="email"
+                            placeholder="Enter your email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="register-password">Password</label>
+                        <input
+                            id="register-password"
+                            type="password"
+                            placeholder="Create a password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                    </div>
+
+                    {message && (
+                        <div className="auth-success">
+                            {message}
+                        </div>
+                    )}
+
+                    {error && (
+                        <div className="auth-error">
+                            {error}
+                        </div>
+                    )}
+
+                    <button
+                        type="submit"
+                        className="auth-submit"
+                        disabled={loading}
+                    >
+                        {loading ? "Creating account..." : "Create Account"}
+                    </button>
+                </form>
+
+                <div className="auth-footer">
+                    <span>Already have an account?</span>
+                    <button
+                        type="button"
+                        onClick={() => navigate("/login")}
+                    >
+                        Login
+                    </button>
                 </div>
 
-                <br />
-
-                <button type="submit">
-                    Register
-                </button>
-            </form>
-
-            {message && (
-                <p>{message}</p>
-            )}
-
-            {error && (
-                <p>{error}</p>
-            )}
-
-            <br />
-
-            <button onClick={() => navigate("/login")}>
-                Already have an account? Login
-            </button>
+            </div>
         </div>
     );
 }
