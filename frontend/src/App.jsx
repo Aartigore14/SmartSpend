@@ -11,53 +11,95 @@ import RecurringTransactions from "./pages/RecurringTransactions";
 import Notifications from "./pages/Notifications";
 import Analytics from "./pages/Analytics";
 import AIInsights from "./pages/AIInsights";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
     return (
         <BrowserRouter>
             <Routes>
-
                 <Route path="/login" element={<Login />} />
-
-                <Route path="/register" element={<Register />} />
-
-                <Route path="/dashboard" element={<Dashboard />} />
-
-                <Route path="/transactions" element={<Transactions />} />
-
-                <Route path="/categories" element={<Categories />} />
-
-                <Route path="/budgets" element={<Budgets />} />
+<Route path="/register" element={<Register />} />
 
                 <Route
-                    path="/savings-goals"
-                    element={<SavingsGoals />}
-                />
+    path="/dashboard"
+    element={
+        <ProtectedRoute>
+            <Dashboard />
+        </ProtectedRoute>
+    }
+/>
 
-                <Route
-                    path="/recurring-transactions"
-                    element={<RecurringTransactions />}
-                />
+<Route
+    path="/transactions"
+    element={
+        <ProtectedRoute>
+            <Transactions />
+        </ProtectedRoute>
+    }
+/>
 
-                <Route
-                    path="/notifications"
-                    element={<Notifications />}
-                />
+<Route
+    path="/categories"
+    element={
+        <ProtectedRoute>
+            <Categories />
+        </ProtectedRoute>
+    }
+/>
 
-                <Route
-                    path="/analytics"
-                    element={<Analytics />}
-                />
+<Route
+    path="/budgets"
+    element={
+        <ProtectedRoute>
+            <Budgets />
+        </ProtectedRoute>
+    }
+/>
 
-                <Route
-                    path="/ai-insights"
-                    element={<AIInsights />}
-                />
+<Route
+    path="/savings-goals"
+    element={
+        <ProtectedRoute>
+            <SavingsGoals />
+        </ProtectedRoute>
+    }
+/>
 
-                <Route
-                    path="/"
-                    element={<Navigate to="/login" replace />}
-                />
+<Route
+    path="/recurring-transactions"
+    element={
+        <ProtectedRoute>
+            <RecurringTransactions />
+        </ProtectedRoute>
+    }
+/>
+
+<Route
+    path="/notifications"
+    element={
+        <ProtectedRoute>
+            <Notifications />
+        </ProtectedRoute>
+    }
+/>
+
+<Route
+    path="/analytics"
+    element={
+        <ProtectedRoute>
+            <Analytics />
+        </ProtectedRoute>
+    }
+/>
+
+<Route
+    path="/ai-insights"
+    element={
+        <ProtectedRoute>
+            <AIInsights />
+        </ProtectedRoute>
+    }
+/>
 
             </Routes>
         </BrowserRouter>

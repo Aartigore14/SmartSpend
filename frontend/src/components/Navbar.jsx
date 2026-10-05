@@ -1,12 +1,18 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate} from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import "../styles/navbar.css";
 
 function Navbar() {
     const { user, logout } = useAuth();
+    const navigate = useNavigate();
     const [menuOpen, setMenuOpen] = useState(false);
 
+    const handleLogout = () =>{
+        logout();
+        setMenuOpen(false);
+        navigate("/login");
+    };
     const closeMenu = () => {
         setMenuOpen(false);
     };
@@ -74,7 +80,7 @@ function Navbar() {
                         Welcome, {user?.name || "User"}
                     </span>
 
-                    <button onClick={logout}>
+                    <button onClick={handleLogout}>
                         Logout
                     </button>
                 </div>
@@ -88,7 +94,7 @@ function Navbar() {
 
                 <button
                     className="logout-button"
-                    onClick={logout}
+                    onClick={handleLogout}
                 >
                     Logout
                 </button>
