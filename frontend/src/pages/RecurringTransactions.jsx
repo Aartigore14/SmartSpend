@@ -1,3 +1,4 @@
+import Navbar from "../components/Navbar";
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
@@ -264,15 +265,18 @@ function RecurringTransactions() {
 
   if (loading) {
     return (
+        <><Navbar/>
       <div className="recurring-page">
         <div className="recurring-loading">
           Loading recurring transactions...
         </div>
       </div>
+      </>
     );
   }
 
   return (
+    <><Navbar/>
     <div className="recurring-page">
 
       {/* Header */}
@@ -743,6 +747,7 @@ function RecurringTransactions() {
       )}
 
     </div>
+    </>
   );
 }
 
