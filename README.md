@@ -1,82 +1,134 @@
 # 💰 SmartSpend
 
-### AI-Powered Personal Finance Management System
+### Personal Finance Management System with Intelligent Spending Insights
 
 SmartSpend is a full-stack personal finance management application designed to help users track, analyze, and manage their income and expenses efficiently.
 
-It goes beyond a basic expense tracker by providing financial analytics, budgeting tools, recurring transactions, savings goals, and intelligent insights to help users make better financial decisions.
+It goes beyond a basic expense tracker by providing budgeting, recurring transactions, savings goals, financial analytics, notifications, and intelligent spending insights.
 
 ---
 
 ## 🚀 Features
 
 ### 🔐 User Authentication
+
 - User registration and login
-- Secure user-specific data management
-- User-based transaction and financial records
+- JWT-based authentication
+- Protected frontend routes
+- User-specific financial data
+- Secure password handling with BCrypt
+- Automatic logout and session handling
 
 ### 💸 Income & Expense Management
+
 - Add income and expenses
-- Update and delete transactions
+- Update transactions
+- Delete transactions
 - Categorize transactions
 - View transaction history
-- Track spending patterns
+- Track total income and expenses
+- Calculate current balance
+
+### 🗂️ Category Management
+
+- Create custom categories
+- Update categories
+- Delete categories
+- Separate income and expense categories
+- User-specific categories
+
+### 💰 Budget Management
+
+- Create category-wise budgets
+- Set spending limits
+- Track budget utilization
+- Calculate remaining budget
+- Detect budget warnings
+- Detect exceeded budgets
+- Budget analysis based on transaction data
+
+### 🎯 Savings Goals
+
+- Create savings goals
+- Set target amounts
+- Track current savings
+- Monitor progress toward financial targets
+- Update savings goals
+- Mark completed goals
 
 ### 🔄 Recurring Transactions
-- Create recurring income/expense entries
+
+- Create recurring income and expense entries
 - Supports:
   - Daily
   - Weekly
   - Monthly
   - Yearly
-- Automatically processes transactions when they become due
+- Automatically processes due transactions
 - Set start and end dates
 - Activate/deactivate recurring transactions
+- Automatically creates normal transactions when recurring entries become due
+
+### 🔔 Notifications
+
+- View financial notifications
+- Budget warning notifications
+- Budget exceeded notifications
+- Mark individual notifications as read
+- Mark all notifications as read
+- Delete notifications
+- Filter notifications by type and read status
 
 ### 📊 Analytics Dashboard
-The dashboard provides visual insights into financial activities, including:
 
 - Total income
 - Total expenses
 - Current balance
-- Category-wise spending
-- Monthly spending trends
-- Budget utilization
-- Remaining budget
-- Month-over-month comparison
-- Highest spending category
 - Savings rate
-- Overspending analysis
+- Total transactions
+- Category-wise expense analysis
+- Highest spending category
+- Income vs expense comparison
+- Spending category breakdown
+- Visual spending insights
 
-### 💰 Budget Management
-- Create budgets
-- Set category-wise spending limits
-- Track budget utilization
-- Monitor remaining budget
-- Identify overspending
+### 📈 Dashboard
 
-### 🎯 Savings Goals
-- Create savings goals
-- Set target amounts
-- Track savings progress
-- Monitor progress toward financial targets
+The SmartSpend dashboard provides a quick overview of the user's financial activity.
 
-### 📈 Reports & Insights
-- Analyze financial performance
-- Understand spending behavior
-- Generate meaningful financial summaries
-- Identify spending patterns
+- Total income
+- Total expenses
+- Current balance
+- Savings rate
+- Total transactions
+- Top spending category
+- Budget status
+- Active savings goals
+- Unread notifications
 
-### 🤖 AI-Powered Insights
-SmartSpend is designed to provide intelligent financial insights such as:
+### 🤖 Intelligent Spending Insights
 
-- Spending analysis
-- Budget recommendations
-- Spending pattern detection
-- Personalized financial summaries
-- Smart categorization assistance
+SmartSpend currently provides rule-based spending analysis using the user's transaction data.
 
-> AI features focus on personal spending analysis and budgeting rather than executing financial transactions or providing investment advice.
+The system can:
+
+- Identify the highest spending category
+- Calculate spending in the highest category
+- Generate spending-related recommendations
+- Store generated insights
+- View previous insights
+- Delete previous insights
+
+> The current insight engine is rule-based. It does not use an external generative AI API yet.
+
+### 📱 Responsive User Interface
+
+- Responsive desktop layout
+- Tablet support
+- Mobile-friendly interface
+- Responsive navigation bar
+- Mobile hamburger menu
+- Consistent UI across application modules
 
 ---
 
@@ -85,11 +137,11 @@ SmartSpend is designed to provide intelligent financial insights such as:
 ## Frontend
 
 - React.js
-- Tailwind CSS
-- Chart.js / Recharts
 - JavaScript
 - HTML5
 - CSS3
+- React Router
+- Axios
 
 ## Backend
 
@@ -98,6 +150,10 @@ SmartSpend is designed to provide intelligent financial insights such as:
 - Spring Web
 - Spring Data JPA
 - REST APIs
+- JWT Authentication
+- BCrypt Password Hashing
+- JUnit 5
+- Mockito
 
 ## Database
 
@@ -106,7 +162,7 @@ SmartSpend is designed to provide intelligent financial insights such as:
 ## Development & Testing
 
 - IntelliJ IDEA
-- VS Code
+- Visual Studio Code
 - Postman
 - Git
 - GitHub
@@ -116,31 +172,41 @@ SmartSpend is designed to provide intelligent financial insights such as:
 # 🏗️ System Architecture
 
 ```text
-                ┌─────────────────────┐
-                │       User          │
-                └──────────┬──────────┘
-                           │
-                           ▼
-                ┌─────────────────────┐
-                │   React Frontend    │
-                │  Dashboard & UI     │
-                └──────────┬──────────┘
-                           │
-                     REST API Calls
-                           │
-                           ▼
-                ┌─────────────────────┐
-                │   Spring Boot       │
-                │      Backend        │
-                ├─────────────────────┤
-                │ Controllers         │
-                │ Services            │
-                │ Repositories        │
-                │ Business Logic      │
-                └──────────┬──────────┘
-                           │
-                           ▼
-                ┌─────────────────────┐
-                │       MySQL         │
-                │      Database       │
-                └─────────────────────┘
+                         ┌─────────────────────┐
+                         │        User         │
+                         └──────────┬──────────┘
+                                    │
+                                    ▼
+                         ┌─────────────────────┐
+                         │    React Frontend   │
+                         │                     │
+                         │ Dashboard           │
+                         │ Transactions        │
+                         │ Categories          │
+                         │ Budgets             │
+                         │ Savings Goals       │
+                         │ Recurring           │
+                         │ Notifications       │
+                         │ Analytics           │
+                         │ AI Insights         │
+                         └──────────┬──────────┘
+                                    │
+                              REST API + JWT
+                                    │
+                                    ▼
+                         ┌─────────────────────┐
+                         │   Spring Boot       │
+                         │      Backend        │
+                         ├─────────────────────┤
+                         │ Controllers         │
+                         │ Services            │
+                         │ Repositories        │
+                         │ Business Logic      │
+                         │ Authentication      │
+                         └──────────┬──────────┘
+                                    │
+                                    ▼
+                         ┌─────────────────────┐
+                         │       MySQL         │
+                         │      Database       │
+                         └─────────────────────┘
